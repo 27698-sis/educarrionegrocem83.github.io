@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Educa Río Negro - Plataforma Modular</title>
+    
+    <!-- Fuentes y estilos esenciales -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    
+    <style>
+        :root {
+            --primary-color: #FFA500;
+            --secondary-color: #FFD700;
+            --accent-color: #CD853F;
+            --light-bg: #FFF8E1;
+            --dark-bg: #1a1a1a;
+            --card-bg: #ffffff;
+            --text-dark: #333;
+            --text-light: #f0f4f8;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: var(--light-bg);
+            color: var(--text-dark);
+        }
+
+        .dark-mode {
+            background: var(--dark-bg);
+            color: var(--text-light);
+        }
+
+        .dark-toggle {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1.5rem 2rem;
+            text-align: center;
+        }
+
+        nav {
+            background: #2e3b4e;
+            display: flex;
+            overflow-x: auto;
+            padding: 0.5rem 1rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.8rem 1.2rem;
+            display: inline-block;
+        }
+
+        nav a.active {
+            background: var(--accent-color);
+        }
+
+        .main-container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            gap: 2rem;
+        }
+
+        .sidebar {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+        }
+
+        .content-area {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 2rem;
+        }
+
+        .module-card {
+            border-left: 5px solid var(--accent-color);
+            margin: 1rem 0;
+            padding: 1rem;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .module-card:hover {
+            transform: translateX(5px);
+        }
+
+        .collapsible {
+            display: none;
+            margin-left: 1rem;
+            padding-top: 1rem;
+        }
+
+        .trimester {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: #f0f4f8;
+            border-radius: 5px;
+        }
+
+        .resource-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            cursor: pointer;
+        }
+
+        .resource-btn:hover {
+            background: var(--secondary-color);
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Botón modo oscuro -->
+    <button class="dark-toggle" onclick="toggleDarkMode()" aria-label="Alternar modo oscuro">
+        🌙
+    </button>
+
+    <!-- Cabecera -->
+    <header>
+        <h1>C.E.M. 83 - Río Negro</h1>
+        <p>Plataforma Educa 2025</p>
+        <span>Prof. [Nombre]</span>
+    </header>
+
+    <!-- Navegación -->
+    <nav style="background: #2e3b4e; padding: 0.5rem 1rem; overflow-x: auto;">
+        <a href="#" onclick="showTab('modulos')" style="color: white; text-decoration: none; padding: 0.8rem 1.2rem; display: inline-block;">Módulos</a>
+        <a href="#" onclick="showTab('estudiantes')" style="color: white; text-decoration: none; padding: 0.8rem 1.2rem; display: inline-block;">Estudiantes</a>
+        <a href="#" onclick="showTab('recursos')" style="color: white; text-decoration: none; padding: 0.8rem 1.2rem; display: inline-block;">Recursos</a>
+        <a href="#" onclick="showTab('perfil')" style="color: white; text-decoration: none; padding: 0.8rem 1.2rem; display: inline-block;">Perfil</a>
+    </nav>
+
+    <!-- Contenedor principal -->
+    <div class="main-container">
+        <!-- Barra lateral -->
+        <div class="sidebar">
+            <h3>Acceso Directo</h3>
+            <ul style="list-style: none; padding: 0;">
+                <li><a href="#" onclick="loadResources()">Ruta de Acceso</a></li>
+                <li><a href="#" onclick="showFeedbackForm()">Retroalimentación</a></li>
+                <li><a href="#">Notificaciones</a></li>
+                <li><a href="#">Ayuda</a></li>
+            </ul>
+        </div>
+
+        <!-- Área de contenido -->
+        <div class="content-area" id="contentArea">
+            <h2>Bienvenido/a Prof. [Nombre]</h2>
+            <p>Seleccione un contexto modular del menú superior para comenzar</p>
+        </div>
+    </div>
+
+    <!-- Pie de página -->
+    <footer style="background: #2e3b4e; color: white; text-align: center; padding: 1.5rem;">
+        <p>Ministerio de Educación de Río Negro</p>
+        <p>
+            <a href="https://drive.google.com/drive/folders/11L76R-Rm2GKhGEl6QVMtBPwOEcUAF-Gg" 
+               target="_blank" style="color: var(--text-light);">
+               Carpeta Compartida de Recursos
+            </a>
+        </p>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // 1. Función para alternar modo oscuro
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const btn = document.querySelector('.dark-toggle');
+            btn.textContent = document.body.classList.contains('dark-mode') ? '☀' : '🌙';
+            
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+        }
+
+        // 2. Cargar estado del modo oscuro
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+            if (savedDarkMode) {
+                document.body.classList.add('dark-mode');
+            }
+            
+            // Mostrar módulos por defecto
+            showTab('modulos');
+        });
+
+        // 3. Función para mostrar pestañas
+        function showTab(tabId) {
+            document.querySelectorAll('nav a').forEach(link => {
+                link.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            
+            const contentArea = document.getElementById('contentArea');
+            contentArea.innerHTML = '';
+            
+            switch(tabId) {
+                case 'modulos':
+                    contentArea.innerHTML = generateModuleContent();
+                    break;
+                case 'estudiantes':
+                    contentArea.innerHTML = generateStudentContent();
+                    break;
+                case 'recursos':
+                    contentArea.innerHTML = generateResourceContent();
+                    break;
+                case 'perfil':
+                    contentArea.innerHTML = generateProfileContent();
+                    break;
+            }
+        }
+
+        // 4. Generar contenido para módulos
+        function generateModuleContent() {
+            return `
+                <h3>Módulos Educativos</h3>
+                
+                <!-- Contexto 1 -->
+                <div class="module-card" onclick="toggleCollapsible(this)">
+                    <h4>Módulo 1: Naturaleza-Desarrollo-Salud</h4>
+                    <div class="collapsible" style="display: block;">
+                        <div class="trimester">
+                            <h5>Primer Trimestre</h5>
+                            <ul>
+                                <li>Biología 1°</li>
+                                <li>Geografía 1°</li>
+                                <li>Historia 1°</li>
+                                <li>Contabilidad 1°</li>
+                                <li>Educación Cívica 1°</li>
+                                <li>Derecho 1°</li>
+                            </ul>
+                        </div>
+                        <div class="trimester">
+                            <h5>Segundo Trimestre</h5>
+                            <ul>
+                                <li>Taller de Matemática (Primera Parte)</li>
+                                <li>Taller de Prácticas de Lectura y Escritura</li>
+                                <li>Idioma Extranjero I (Primera Parte)</li>
+                            </ul>
+                        </div>
+                        <button class="resource-btn" onclick="loadResources('contexto1')">Ver Recursos</button>
+                    </div>
+                </div>
+                
+                <!-- Contexto 2 -->
+                <div class="module-card" onclick="toggleCollapsible(this)">
+                    <h4>Módulo 2: Identidades-Género-Diversidades</h4>
+                    <div class="collapsible">
+                        <div class="trimester">
+                            <h5>Primer Trimestre</h5>
+                            <ul>
+                                <li>Biología 1°</li>
+                                <li>Geografía 1°</li>
+                                <li>Historia 1°</li>
+                                <li>Contabilidad 1°</li>
+                                <li>Educación Cívica 1°</li>
+                                <li>Derecho 1°</li>
+                            </ul>
+                        </div>
+                        <div class="trimester">
+                            <h5>Segundo Trimestre</h5>
+                            <ul>
+                                <li>Taller de Matemática (Segunda Parte)</li>
+                                <li>Idioma Extranjero I (Segunda Parte)</li>
+                            </ul>
+                        </div>
+                        <button class="resource-btn" onclick="loadResources('contexto2')">Ver Recursos</button>
+                    </div>
+                </div>
+                
+                <!-- Contexto 3 -->
+                <div class="module-card" onclick="toggleCollapsible(this)">
+                    <h4>Módulo 3: Diversidad-Cultura-Sociedad</h4>
+                    <div class="collapsible">
+                        <div class="trimester">
+                            <h5>Primer Trimestre</h5>
+                            <ul>
+                                <li>Biología 2°</li>
+                                <li>Geografía 2°</li>
+                                <li>Historia 2°</li>
+                                <li>Educación Cívica 2°</li>
+                            </ul>
+                        </div>
+                        <div class="trimester">
+                            <h5>Segundo Trimestre</h5>
+                            <ul>
+                                <li>Taller de Informática (Primera Parte)</li>
+                                <li>Taller de Ciencias</li>
+                            </ul>
+                        </div>
+                        <button class="resource-btn" onclick="loadResources('contexto3')">Ver Recursos</button>
+                    </div>
+                </div>
+                
+                <!-- Contexto 4 -->
+                <div class="module-card" onclick="toggleCollapsible(this)">
+                    <h4>Módulo 4: Comunicación-Ciencia-Tecnología</h4>
+                    <div class="collapsible">
+                        <div class="trimester">
+                            <h5>Primer Trimestre</h5>
+                            <ul>
+                                <li>Matemática 3°</li>
+                                <li>Física 3°</li>
+                                <li>Química 4°</li>
+                                <li>Lengua y Literatura 3°</li>
+                            </ul>
+                        </div>
+                        <div class="trimester">
+                            <h5>Segundo Trimestre</h5>
+                            <ul>
+                                <li>Taller Vocacional y Proyecto de Vida</li>
+                                <li>Educación Cívica 2°</li>
+                            </ul>
+                        </div>
+                        <button class="resource-btn" onclick="loadResources('contexto4')">Ver Recursos</button>
+                    </div>
+                </div>
+                
+                <!-- Contexto 5 -->
+                <div class="module-card" onclick="toggleCollapsible(this)">
+                    <h4>Módulo 5: Economía-Equidad-Derechos</h4>
+                    <div class="collapsible">
+                        <div class="trimester">
+                            <h5>Primer Trimestre</h5>
+                            <ul>
+                                <li>Derecho 2°</li>
+                                <li>Derecho 3°</li>
+                                <li>Contabilidad 3°</li>
+                                <li>Economía 3°</li>
+                            </ul>
+                        </div>
+                        <div class="trimester">
+                            <h5>Segundo Trimestre</h5>
+                            <ul>
+                                <li>Lenguaje de Programación</li>
+                                <li>Administración 3°</li>
+                            </ul>
+                        </div>
+                        <button class="resource-btn" onclick="loadResources('contexto5')">Ver Recursos</button>
+                    </div>
+                </div>
+                
+                <!-- Contexto 6 -->
+                <div class="module-card" onclick="toggleCollapsible(this)">
+                    <h4>Módulo 6: Emancipación-Organización comunitaria-Trabajo</h4>
+                    <div class="collapsible">
+                        <div class="trimester">
+                            <h5>Primer Trimestre</h5>
+                            <ul>
+                                <li>Geografía 2°</li>
+                                <li>Historia 2°</li>
+                                <li>Educación Cívica 2°</li>
+                                <li>Contabilidad 3°</li>
+                            </ul>
+                        </div>
+                        <div class="trimester">
+                            <h5>Segundo Trimestre</h5>
+                            <ul>
+                                <li>Prácticas Profesionalizantes</li>
+                                <li>Trabajo en Cooperativas</li>
+                            </ul>
+                        </div>
+                        <button class="resource-btn" onclick="loadResources('contexto6')">Ver Recursos</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 5. Generar contenido para estudiantes
+        function generateStudentContent() {
+            return `
+                <h3>Panel de Estudiantes</h3>
+                <div class="student-card" style="padding: 1.5rem; margin-bottom: 1rem;">
+                    <p><strong>María González</strong> - Módulo 1: 75%</p>
+                    <button class="resource-btn" onclick="viewProgress(1)">Ver Progreso</button>
+                </div>
+                <div class="student-card" style="padding: 1.5rem;">
+                    <p><strong>Carlos Martínez</strong> - Módulo 2: 60%</p>
+                    <button class="resource-btn" onclick="viewProgress(2)">Ver Progreso</button>
+                </div>
+            `;
+        }
+
+        // 6. Generar contenido para recursos
+        function generateResourceContent() {
+            return `
+                <h3>Recursos Didácticos</h3>
+                <div class="trimester">
+                    <h5>Guías y Planificaciones</h5>
+                    <ul>
+                        <li><a href="#">Guía Módulo 1</a></li>
+                        <li><a href="#">Planificación Anual</a></li>
+                    </ul>
+                </div>
+            `;
+        }
+
+        // 7. Generar contenido para perfil
+        function generateProfileContent() {
+            return `
+                <h3>Mi Perfil</h3>
+                <div class="profile-card" style="padding: 1.5rem;">
+                    <p><strong>Nombre:</strong> [Nombre Completo]</p>
+                    <p><strong>Email:</strong> [email@example.com]</p>
+                    <p><strong>Cargo:</strong> Docente Educación Media</p>
+                    <button class="resource-btn" onclick="logout()">Cerrar Sesión</button>
+                </div>
+            `;
+        }
+
+        // 8. Alternar secciones colapsables
+        function toggleCollapsible(element) {
+            const content = element.querySelector('.collapsible');
+            if (content) {
+                content.style.display = content.style.display === 'block' ? 'none' : 'block';
+                element.classList.toggle('expanded');
+            }
+        }
+
+        // 9. Cerrar sesión
+        function logout() {
+            alert("Sesión cerrada exitosamente");
+            document.getElementById('contentArea').innerHTML = `
+                <h2>Iniciar Sesión</h2>
+                <p>Por favor, inicie sesión para continuar</p>
+            `;
+        }
+
+        // 10. Formulario de retroalimentación
+        function showFeedbackForm() {
+            const feedbackForm = document.createElement('div');
+            feedbackForm.style.marginTop = '1.5rem';
+            feedbackForm.style.background = '#f0f4f8';
+            feedbackForm.style.padding = '1.5rem';
+            feedbackForm.style.borderRadius = '8px';
+            feedbackForm.innerHTML = `
+                <h4>Retroalimentación Pedagógica</h4>
+                <textarea rows="4" placeholder="Escriba aquí sus observaciones..." 
+                          style="width: 100%; padding: 0.5rem; border-radius: 5px;"></textarea>
+                <button class="resource-btn" style="margin-top: 1rem;" onclick="submitFeedback()">Enviar</button>
+            `;
+            document.getElementById('contentArea').appendChild(feedbackForm);
+        }
+
+        // 11. Enviar retroalimentación
+        function submitFeedback() {
+            alert("Retroalimentación enviada exitosamente");
+        }
+
+        // 12. Cargar recursos
+        function loadResources(contexto) {
+            const folderIds = {
+                'contexto1': '1VQoH_mhBgaiu-XcKTof_U_r4rFNqals9',
+                'contexto2': '1XcKTof_VQoH_mhBgaiur4rFNqals9',
+                'contexto3': '1KTof_U_VQoH_mhr4rFNqals9',
+                'contexto4': '1contexto4ID',
+                'contexto5': '1contexto5ID',
+                'contexto6': '1contexto6ID'
+            };
+            
+            if (!folderIds[contexto]) return;
+            
+            alert("Redirigiendo a recursos del contexto seleccionado");
+            window.open(`https://drive.google.com/drive/folders/${folderIds[contexto]}`, '_blank');
+        }
+    </script>
+</body>
+</html>
