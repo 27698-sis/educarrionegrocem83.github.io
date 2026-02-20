@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Libertad de Vientre - Historia Argentina 1813</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2c5aa0;
+            --secondary-color: #e8a735;
+            --accent-color: #c1392b;
+            --dark-bg: #1a1a2e;
+            --light-bg: #f8f9fa;
+            --text-dark: #2d3436;
+            --text-light: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .slide-container {
+            max-width: 1000px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .slide {
+            display: none;
+            min-height: 600px;
+            padding: 60px;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Slide de título */
+        .slide-title {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--text-light);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .slide-title h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .slide-title .subtitle {
+            font-size: 1.5rem;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+
+        .slide-title .meta {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        /* Slides de contenido */
+        h2 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            border-bottom: 4px solid var(--secondary-color);
+            padding-bottom: 15px;
+        }
+
+        h3 {
+            color: var(--accent-color);
+            font-size: 1.8rem;
+            margin: 25px 0 15px;
+        }
+
+        p, li {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+        }
+
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--secondary-color);
+            z-index: 0;
+        }
+
+        .timeline-item {
+            background: white;
+            padding: 15px 20px;
+            border: 3px solid var(--primary-color);
+            border-radius: 10px;
+            z-index: 1;
+            text-align: center;
+            min-width: 120px;
+        }
+
+        .timeline-item.highlight {
+            background: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
+            transform: scale(1.1);
+        }
+
+        .stat-box {
+            background: var(--light-bg);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 6px solid var(--accent-color);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        .quote {
+            background: var(--primary-color);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            font-style: italic;
+            font-size: 1.3rem;
+            margin: 25px 0;
+            position: relative;
+        }
+
+        .quote::before {
+            content: '"';
+            font-size: 5rem;
+            position: absolute;
+            top: -10px;
+            left: 15px;
+            opacity: 0.3;
+        }
+
+        .two-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 25px 0;
+        }
+
+        .card {
+            background: var(--light-bg);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .card.primary {
+            border-left: 6px solid var(--primary-color);
+        }
+
+        .card.secondary {
+            border-left: 6px solid var(--secondary-color);
+        }
+
+        .card.accent {
+            border-left: 6px solid var(--accent-color);
+        }
+
+        ul {
+            margin-left: 30px;
+        }
+
+        .highlight-text {
+            background: var(--secondary-color);
+            color: var(--text-dark);
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .reflection-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 25px 0;
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: 500;
+        }
+
+        /* Navegación */
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 60px;
+            background: var(--dark-bg);
+            color: white;
+        }
+
+        .nav-btn {
+            background: var(--secondary-color);
+            color: var(--text-dark);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .nav-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .nav-btn:disabled {
+            background: #555;
+            color: #999;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .slide-counter {
+            font-size: 1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .slide {
+                padding: 30px;
+                min-height: 500px;
+            }
+
+            .slide-title h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.8rem;
+            }
+
+            .two-columns {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .timeline::before {
+                display: none;
+            }
+
+            .navigation {
+                padding: 15px 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <!-- Slide 1: Título -->
+        <div class="slide active slide-title">
+            <h1>Libertad de Vientre</h1>
+            <div class="subtitle">La Asamblea del Año XIII y el nacimiento de los derechos humanos</div>
+            <div class="meta">Historia Argentina • 2° Año Secundaria • 2026</div>
+        </div>
+
+        <!-- Slide 2: ¿Qué vamos a descubrir? -->
+        <div class="slide">
+            <h2>¿Qué vamos a descubrir hoy?</h2>
+            <div class="two-columns">
+                <div class="card primary">
+                    <h3>📚 Comprender</h3>
+                    <p>El contexto histórico de Argentina en 1813</p>
+                </div>
+                <div class="card secondary">
+                    <h3>🔍 Analizar</h3>
+                    <p>El decreto de Libertad de Vientres</p>
+                </div>
+                <div class="card accent">
+                    <h3>💭 Reflexionar</h3>
+                    <p>Sobre libertad, esclavitud y derechos humanos</p>
+                </div>
+                <div class="card primary">
+                    <h3>🔗 Conectar</h3>
+                    <p>El pasado con desafíos actuales de nuestra democracia</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Contexto - Argentina 1813 -->
+        <div class="slide">
+            <h2>El Contexto: Argentina en 1813</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <strong>1810</strong><br>
+                    Revolución<br>de Mayo
+                </div>
+                <div class="timeline-item">
+                    <strong>1812</strong><br>
+                    Segundo<br>Triunvirato
+                </div>
+                <div class="timeline-item highlight">
+                    <strong>1813</strong><br>
+                    Asamblea del<br>Año XIII
+                </div>
+                <div class="timeline-item">
+                    <strong>1816</strong><br>
+                    Independencia
+                </div>
+            </div>
+            <div class="stat-box">
+                <p><strong>Dato importante:</strong> La Asamblea del Año XIII fue la primera asamblea constituyente de las Provincias Unidas del Río de la Plata.</p>
+            </div>
+            <div class="reflection-box">
+                <strong>PREGUNTA PARA REFLEXIONAR</strong><br><br>
+                ¿Es posible proclamar la libertad de un país mientras se mantiene la esclavitud de personas?
+            </div>
+        </div>
+
+        <!-- Slide 4: La Esclavitud en el Virreinato -->
+        <div class="slide">
+            <h2>La Esclavitud en el Virreinato</h2>
+            <h3>Cifras que duelen</h3>
+            <div class="two-columns">
+                <div class="stat-box">
+                    <div class="stat-number">200.000</div>
+                    <p>africanos esclavizados fueron traídos al Río de la Plata</p>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">30%</div>
+                    <p>de la población de Buenos Aires era afrodescendiente</p>
+                </div>
+            </div>
+            <div class="card accent">
+                <h3>El Tráfico de Esclavos</h3>
+                <p>Aproximadamente <span class="highlight-text">45.000 personas</span> fueron vendidas como esclavas en Buenos Aires entre los siglos XVII y XIX.</p>
+            </div>
+            <p><strong>Trabajo y Vida:</strong> Los esclavizados trabajaban en campos, comercios, casas de familia, y oficios diversos bajo condiciones extremadamente duras.</p>
+        </div>
+
+        <!-- Slide 5: 2 de Febrero de 1813 - El Debate -->
+        <div class="slide">
+            <h2>2 de Febrero de 1813: El Debate Histórico</h2>
+            <h3>La Asamblea se reúne</h3>
+            <div class="two-columns">
+                <div class="card primary">
+                    <h3>Protagonistas clave</h3>
+                    <ul>
+                        <li><strong>Juan José Paso</strong></li>
+                        <li><strong>Francisco Narciso de Laprida</strong></li>
+                        <li><strong>Fray Cayetano Rodríguez</strong></li>
+                    </ul>
+                </div>
+                <div class="card secondary">
+                    <h3>Argumentos a favor</h3>
+                    <p>Los defensores de la libertad argumentaban que era contradictorio luchar por la libertad política mientras se mantenía la esclavitud.</p>
+                    <p>Consideraban la esclavitud como <span class="highlight-text">"ultrajante a la humanidad"</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: El Decreto de Libertad de Vientres -->
+        <div class="slide">
+            <h2>El Decreto de Libertad de Vientres</h2>
+            <div class="quote">
+                Siendo tan desdoroso, como ultrajante á la humanidad, el que en los mismos pueblos, que con tanto tesón y esfuerzo caminan hacia su libertad, permanezcan por más tiempo en la esclavitud...
+            </div>
+            <div class="quote">
+                ...sean considerados y tenidos por <strong>libres</strong>, todos los que en dicho territorio hubiesen nacido desde el <strong>31 de enero de 1813</strong> inclusive en adelante...
+            </div>
+        </div>
+
+        <!-- Slide 7: Lo que NO hizo el decreto -->
+        <div class="slide">
+            <h2>Lo que NO hizo el decreto</h2>
+            <div class="two-columns">
+                <div class="card accent">
+                    <h3>❌ NO abolió</h3>
+                    <p>la esclavitud de manera inmediata y total</p>
+                </div>
+                <div class="card accent">
+                    <h3>⛓️ Los esclavos adultos</h3>
+                    <p>siguieron siendo propiedad de sus amos</p>
+                </div>
+                <div class="card accent">
+                    <h3>⏳ Los libertos</h3>
+                    <p>no fueron libres de inmediato, sino gradualmente</p>
+                </div>
+                <div class="card accent">
+                    <h3>💰 No se establecieron</h3>
+                    <p>indemnizaciones claras para los propietarios</p>
+                </div>
+            </div>
+            <div class="stat-box" style="margin-top: 25px;">
+                <p><strong>¿Qué significaba en la práctica?</strong><br>
+                Los hijos de esclavos nacidos a partir del 31 de enero de 1813 serían considerados libres, pero debían permanecer bajo tutela de los amos de sus padres hasta la mayoría de edad.</p>
+            </div>
+        </div>
+
+        <!-- Slide 8: El Gran Dilema -->
+        <div class="slide">
+            <h2>El Gran Dilema: ¿Libertad o Propiedad?</h2>
+            <div class="two-columns">
+                <div class="card primary">
+                    <h3>⚖️ Libertad Individual</h3>
+                    <p>Todas las personas deben nacer libres</p>
+                    <p>La esclavitud contradice los valores revolucionarios</p>
+                </div>
+                <div class="card secondary">
+                    <h3>🏛️ Derecho de Propiedad</h3>
+                    <p>Los propietarios consideraban a los esclavos como su propiedad</p>
+                    <p>Temían pérdidas económicas</p>
+                </div>
+            </div>
+            <div class="stat-box" style="background: var(--secondary-color); color: var(--text-dark); margin-top: 30px;">
+                <h3 style="color: var(--text-dark);">La solución gradual:</h3>
+                <p>La libertad de vientres fue un <strong>compromiso</strong>. No abolía la esclavitud inmediatamente, pero establecía un camino hacia su extinción futura, respetando (parcialmente) ambos principios.</p>
+            </div>
+        </div>
+
+        <!-- Slide 9: Los Afroargentinos en la Independencia -->
+        <div class="slide">
+            <h2>Los Afroargentinos en la Independencia</h2>
+            <h3>En los Ejércitos Patrios</h3>
+            <div class="two-columns">
+                <div class="stat-box">
+                    <div class="stat-number">50%</div>
+                    <p>de los soldados del Ejército Libertador eran afrodescendientes</p>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">2.000+</div>
+                    <p>esclavizados lucharon en batallas heroicas por la independencia</p>
+                </div>
+            </div>
+            <div class="card primary">
+                <h3>Camino hacia la libertad</h3>
+                <p>Muchos esclavos vieron en el ejército una <span class="highlight-text">oportunidad de libertad</span>. Algunos huían de amos crueles, otros se ofrecían voluntarios acusando a sus amos de ser "pro imperio".</p>
+                <p>El Director Supremo estableció que después de <strong>5 años de servicio</strong>, los esclavos podían quedar en libertad.</p>
+            </div>
+        </div>
+
+        <!-- Slide 10: De 1813 a 1853 - Un Camino Largo -->
+        <div class="slide">
+            <h2>De 1813 a 1853: Un Camino Largo</h2>
+            <h3>¿Por qué tomó tanto tiempo?</h3>
+            <div class="card accent">
+                <h3>💰 Intereses económicos</h3>
+                <p>Los propietarios resistían perder su "propiedad"</p>
+            </div>
+            <div class="card accent">
+                <h3>😔 Racismo estructural</h3>
+                <p>Prejuicios arraigados en la sociedad</p>
+            </div>
+            <div class="card accent">
+                <h3>⚔️ Inestabilidad política</h3>
+                <p>Guerras civiles y conflictos internos</p>
+            </div>
+            <div class="card accent">
+                <h3>📜 Falta de indemnizaciones</h3>
+                <p>No se compensó a los propietarios</p>
+            </div>
+            <div class="stat-box" style="margin-top: 30px; background: var(--primary-color); color: white;">
+                <h3 style="color: white;">1853 - Constitución Nacional</h3>
+                <p>El <strong>Artículo 15</strong> abolió definitivamente la esclavitud en Argentina</p>
+            </div>
+        </div>
+
+        <!-- Slide 11: Herencia Cultural Afroargentina -->
+        <div class="slide">
+            <h2>Herencia Cultural Afroargentina</h2>
+            <h3>Contribuciones a la cultura argentina</h3>
+            <div class="two-columns">
+                <div class="card primary">
+                    <h3>🎵 Música</h3>
+                    <p>El candombe, el tango (con influencias afro), la milonga</p>
+                </div>
+                <div class="card secondary">
+                    <h3>💬 Lenguaje</h3>
+                    <p>Palabras de origen africano en el lunfardo</p>
+                </div>
+                <div class="card accent">
+                    <h3>🍽️ Gastronomía</h3>
+                    <p>Influencias en la cocina rioplatense</p>
+                </div>
+                <div class="card primary">
+                    <h3>📖 Historia</h3>
+                    <p>Participación en todas las luchas por la libertad</p>
+                </div>
+            </div>
+            <div class="stat-box" style="margin-top: 25px;">
+                <p><strong>La "invisibilización":</strong> A pesar de sus enormes contribuciones, la historia afroargentina fue sistemáticamente invisibilizada durante décadas.</p>
+            </div>
+        </div>
+
+        <!-- Slide 12: Democracia - Entre lo Ideal y lo Real -->
+        <div class="slide">
+            <h2>Democracia: Entre lo Ideal y lo Real</h2>
+            <h3>Un proceso, no un estado final</h3>
+            <div class="two-columns">
+                <div class="card primary">
+                    <h3>Valores democráticos en construcción</h3>
+                    <ul>
+                        <li><strong>Libertad</strong></li>
+                        <li><strong>Igualdad</strong></li>
+                        <li><strong>Justicia</strong></li>
+                        <li><strong>Participación</strong></li>
+                    </ul>
+                </div>
+                <div class="card secondary">
+                    <h3>La contradicción histórica</h3>
+                    <p>1813 proclamó la libertad política pero mantuvo la esclavitud</p>
+                    <p>Nos enseña que la democracia es un <span class="highlight-text">camino constante</span></p>
+                </div>
+            </div>
+            <div class="reflection-box" style="margin-top: 30px;">
+                <strong>PREGUNTA PARA REFLEXIONAR</strong><br><br>
+                ¿Qué desafíos de igualdad y libertad enfrentamos hoy en nuestra democracia?
+            </div>
+        </div>
+
+        <!-- Slide 13: La Historia Nos Interpela -->
+        <div class="slide">
+            <h2>La Historia Nos Interpela</h2>
+            <div class="two-columns">
+                <div class="card primary">
+                    <h3>✅ Derechos conquistados</h3>
+                    <p>Cada derecho es fruto de luchas históricas</p>
+                </div>
+                <div class="card secondary">
+                    <h3>👁️ Vigilancia constante</h3>
+                    <p>Los derechos requieren defensa permanente</p>
+                </div>
+                <div class="card accent">
+                    <h3>🎯 Desafío de cada generación</h3>
+                    <p>Ampliar y profundizar la democracia</p>
+                </div>
+                <div class="card primary">
+                    <h3>🤝 Herramientas actuales</h3>
+                    <ul>
+                        <li>Participación ciudadana</li>
+                        <li>Denuncia de injusticias</li>
+                        <li>Educación en derechos humanos</li>
+                        <li>Empatía y solidaridad</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="quote" style="margin-top: 30px;">
+                La libertad de vientres nos recuerda que <strong>la historia no está escrita</strong>: la escribimos con nuestras decisiones, nuestras luchas y nuestro compromiso con los valores democráticos.
+            </div>
+        </div>
+
+        <!-- Navegación -->
+        <div class="navigation">
+            <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">← Anterior</button>
+            <span class="slide-counter"><span id="currentSlide">1</span> / <span id="totalSlides">13</span></span>
+            <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Siguiente →</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        document.getElementById('totalSlides').textContent = totalSlides;
+
+        function showSlide(n) {
+            slides.forEach(slide => slide.classList.remove('active'));
+
+            if (n >= totalSlides) {
+                currentSlide = totalSlides - 1;
+            } else if (n < 0) {
+                currentSlide = 0;
+            } else {
+                currentSlide = n;
+            }
+
+            slides[currentSlide].classList.add('active');
+            document.getElementById('currentSlide').textContent = currentSlide + 1;
+
+            // Actualizar botones
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+        }
+
+        function changeSlide(direction) {
+            showSlide(currentSlide + direction);
+        }
+
+        // Navegación con teclado
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+            if (e.key === 'ArrowRight') changeSlide(1);
+        });
+
+        // Inicializar
+        showSlide(0);
+    </script>
+</body>
+</html>
